@@ -26,7 +26,7 @@ namespace BlogApp.Controllers
 
         // GET: /Post/ByBlog/{blogId}
         [AllowAnonymous]
-        public async Task<IActionResult> ByBlog(Guid blogId)
+        public async Task<IActionResult> Index(Guid blogId)
         {
             var posts = await _posts.GetByBlogIdAsync(blogId);
             var viewModels = posts.Select(p => new PostViewModel
@@ -94,7 +94,7 @@ namespace BlogApp.Controllers
             await _posts.AddAsync(post);
 
             TempData["SuccessMessage"] = "Post created successfully.";
-            return RedirectToAction("Details", new { id = post.Id });
+            return RedirectToAction("Details", "Blog", new { id = post.BlogId });
         }
 
         // GET: /Post/Edit/{id}
@@ -135,15 +135,15 @@ namespace BlogApp.Controllers
             await _posts.UpdateAsync(post);
 
             TempData["SuccessMessage"] = "Post updated successfully.";
-            return RedirectToAction("Details", new { id = post.Id });
+            return RedirectToAction("Details", "Blog", new { id = post.BlogId });
         }
 
         // POST: /Post/Delete/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid postId)
         {
-            var post = await _posts.GetAsync(id);
+            var post = await _posts.GetAsync(postId);
             if (post == null) return NotFound();
 
             var authResult = await _authz.AuthorizeAsync(User, post, new OwnershipRequirement());
@@ -151,7 +151,7 @@ namespace BlogApp.Controllers
 
             await _posts.DeleteAsync(post);
             TempData["SuccessMessage"] = "Post deleted successfully.";
-            return RedirectToAction("ByBlog", new { blogId = post.BlogId });
+            return RedirectToAction("Details", "Blog", new { id = post.BlogId });
         }
     }
 }

@@ -41,7 +41,7 @@ public class PostControllerTests : ControllerTestBase<PostController>
             });
 
         // Act
-        var result = await _controller.ByBlog(blogId);
+        var result = await _controller.Index(blogId);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);

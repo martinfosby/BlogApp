@@ -70,7 +70,7 @@ namespace BlogApp.Controllers
             await _comments.AddAsync(comment);
 
             TempData["SuccessMessage"] = "Comment added successfully.";
-            return RedirectToAction("Details", "Post", new { id = model.PostId });
+            return RedirectToAction("Details", "Blog", new { id = post.BlogId });
         }
 
         // GET: /Comment/Edit/{id}
@@ -114,9 +114,9 @@ namespace BlogApp.Controllers
         // POST: /Comment/Delete/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid commentId)
         {
-            var comment = await _comments.GetAsync(id);
+            var comment = await _comments.GetCommentWithPost(commentId);
             if (comment == null) return NotFound();
 
             var authResult = await _authz.AuthorizeAsync(User, comment, new OwnershipRequirement());
@@ -125,7 +125,7 @@ namespace BlogApp.Controllers
             await _comments.DeleteAsync(comment);
 
             TempData["SuccessMessage"] = "Comment deleted successfully.";
-            return RedirectToAction("Details", "Post", new { id = comment.PostId });
+            return RedirectToAction("Details", "Blog", new { id = comment.Post.BlogId });
         }
     }
 }
