@@ -1,0 +1,53 @@
+﻿@model IEnumerable<BlogApp.ViewModels.BlogViewModel>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center mb-4">
+    <h1 class="display-4">Welcome to BlogApp</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <p>Hello, @User.Identity.Name!</p>
+        <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline">
+            <button type="submit" class="btn btn-warning">Logout</button>
+        </form>
+        <a asp-controller="Blog" asp-action="Create" class="btn btn-primary">Create New Blog</a>
+    }
+    else
+    {
+        <a asp-controller="Account" asp-action="Login" class="btn btn-success">Login</a>
+        <a asp-controller="Account" asp-action="Register" class="btn btn-info">Register</a>
+    }
+</div>
+
+<hr />
+
+<h2>My Blogs</h2>
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <p>Please log in to see your blogs.</p>
+}
+else if (!Model.Any())
+{
+    <p>You don't own any blogs yet. <a asp-controller="Blog" asp-action="Create">Create one</a>.</p>
+}
+else
+{
+    <ul>
+        @foreach (var blog in Model)
+        {
+            <li>
+                <h3>@blog.Title</h3>
+                <p>@blog.Description</p>
+                <p><a asp-controller="Blog" asp-action="Details" asp-route-id="@blog.Id">View Details</a></p>
+                <p><a asp-controller="Blog" asp-action="Edit" asp-route-id="@blog.Id">Edit Blog</a></p>
+                <p><a asp-controller="Blog" asp-action="Delete" asp-route-id="@blog.Id">Delete Blog</a></p>
+
+            </li>
+        }
+    </ul>
+}

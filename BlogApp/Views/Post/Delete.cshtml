@@ -1,0 +1,20 @@
+﻿@model BlogApp.ViewModels.PostViewModel
+
+@{
+    ViewData["Title"] = "Delete Post";
+}
+
+<h1>Delete Post</h1>
+
+<div class="alert alert-danger">
+    Are you sure you want to delete this post?
+</div>
+
+<h4>@Model.Title</h4>
+<p>@Model.Body</p>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Details" asp-controller="Blog" asp-route-id="@Model.BlogId" class="btn btn-secondary">Cancel</a>
+</form>

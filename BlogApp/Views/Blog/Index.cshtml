@@ -1,0 +1,43 @@
+﻿@model IEnumerable<BlogApp.ViewModels.BlogViewModel>
+
+@{
+    ViewData["Title"] = "Blogs";
+}
+
+<h1>All Blogs</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Owner</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var blog in Model)
+        {
+            <tr>
+                <td>@blog.Title</td>
+                <td>@blog.Description</td>
+                <td>@blog.Owner.Username</td>
+                <td>@(blog.IsOpen ? "Open" : "Closed")</td>
+                <td>
+                    <a class="btn btn-sm btn-primary" href="@Url.Action("Details", "Blog", new { id = blog.Id })">View</a>
+
+                    @if (User.Identity.IsAuthenticated && 
+                            User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value == blog.OwnerId.ToString())
+                    {
+                        <a class="btn btn-sm btn-warning" href="@Url.Action("Edit", "Blog", new { id = blog.Id })">Edit</a>
+                        <a class="btn btn-sm btn-danger" href="@Url.Action("Delete", "Blog", new { id = blog.Id })">Delete</a>
+                    }
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a class="btn btn-success" href="@Url.Action("Create", "Blog")">Create New Blog</a>

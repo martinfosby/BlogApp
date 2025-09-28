@@ -1,0 +1,30 @@
+﻿@model BlogApp.ViewModels.CommentCreateViewModel
+
+@{
+    ViewData["Title"] = "Add Comment";
+}
+
+<h1>Add Comment</h1>
+
+<form asp-action="Create" method="post">
+    @* Anti-forgery token *@
+    @Html.AntiForgeryToken()
+
+    @* Hidden input to keep track of the post ID *@
+    <input type="hidden" asp-for="PostId" />
+
+    <div class="form-group">
+        <label asp-for="Body" class="control-label"></label>
+        <textarea asp-for="Body" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="Body" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Submit Comment</button>
+    <a asp-controller="Post" asp-action="Details" asp-route-id="@Model.PostId" class="btn btn-secondary mt-2">Cancel</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

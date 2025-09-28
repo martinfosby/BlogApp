@@ -1,0 +1,39 @@
+﻿@model BlogApp.ViewModels.PostViewModel
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<h1>@Model.Title</h1>
+<p>@Model.Body</p>
+<p><small>By: @Model.Owner.Username on @Model.CreatedAt.ToString("g")</small></p>
+
+<hr />
+
+<h2>Comments</h2>
+
+@if (Model.Comments != null && Model.Comments.Any())
+{
+    <ul>
+        @foreach (var comment in Model.Comments)
+        {
+            <li>
+                <p>@comment.Body</p>
+                <p><small>By: @comment.Owner.Username on @comment.CreatedAt.ToString("g")</small></p>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No comments yet.</p>
+}
+
+@if (Model.IsOpen)
+{
+    <p>
+        <a asp-controller="Comment" asp-action="Create" asp-route-postId="@Model.Id" class="btn btn-primary">
+            Add Comment
+        </a>
+    </p>
+}
