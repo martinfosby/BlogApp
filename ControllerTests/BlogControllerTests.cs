@@ -4,6 +4,7 @@ using BlogApp.Repositories;
 using BlogApp.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Xunit;
 
-public class BlogControllerTests
+public class BlogControllerTests : ControllerTestBase<BlogController>
 {
     private readonly Mock<IBlogRepository> _mockRepo;
     private readonly BlogController _controller;
@@ -21,6 +22,7 @@ public class BlogControllerTests
     {
         _mockRepo = new Mock<IBlogRepository>();
         _controller = new BlogController(_mockRepo.Object);
+        InitializeTempData(_controller);
     }
 
     [Fact]

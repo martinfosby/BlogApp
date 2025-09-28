@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-public class CommentControllerTests
+public class CommentControllerTests : ControllerTestBase<CommentController>
 {
     private readonly Mock<ICommentRepository> _mockCommentRepo;
     private readonly Mock<IPostRepository> _mockPostRepo;
@@ -26,6 +26,7 @@ public class CommentControllerTests
         _mockPostRepo = new Mock<IPostRepository>();
         _mockAuthz = new Mock<IAuthorizationService>();
         _controller = new CommentController(_mockCommentRepo.Object, _mockPostRepo.Object, _mockAuthz.Object);
+        InitializeTempData(_controller);
     }
 
     [Fact]

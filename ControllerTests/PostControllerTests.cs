@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Security.Claims;
 using System.Linq;
 
-public class PostControllerTests
+public class PostControllerTests : ControllerTestBase<PostController>
 {
     private readonly Mock<IPostRepository> _mockPostRepo;
     private readonly Mock<IBlogRepository> _mockBlogRepo;
@@ -25,6 +25,7 @@ public class PostControllerTests
         _mockBlogRepo = new Mock<IBlogRepository>();
         _mockAuthz = new Mock<IAuthorizationService>();
         _controller = new PostController(_mockPostRepo.Object, _mockBlogRepo.Object, _mockAuthz.Object);
+        InitializeTempData(_controller);
     }
 
     [Fact]

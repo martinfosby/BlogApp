@@ -11,7 +11,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Linq;
 
-public class HomeControllerTests
+public class HomeControllerTests : ControllerTestBase<HomeController>
 {
     private readonly Mock<IBlogRepository> _mockRepo;
     private readonly Mock<Microsoft.Extensions.Logging.ILogger<HomeController>> _mockLogger;
@@ -32,8 +32,8 @@ public class HomeControllerTests
             });
 
         _mockLogger = new Mock<Microsoft.Extensions.Logging.ILogger<HomeController>>();
-
         _controller = new HomeController(_mockLogger.Object, _mockRepo.Object);
+        InitializeTempData(_controller);
     }
 
     private void AuthenticateController()

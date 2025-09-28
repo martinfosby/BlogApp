@@ -70,7 +70,7 @@ namespace BlogApp.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            var userIdClaim = User?.FindFirst(ClaimTypes.NameIdentifier);
             if (userIdClaim == null || string.IsNullOrEmpty(userIdClaim.Value))
             {
                 // Optionally handle the error, e.g. redirect to login or show an error page
@@ -100,7 +100,7 @@ namespace BlogApp.Controllers
             var blog = await _blogs.GetAsync(id);
             if (blog == null) return NotFound();
 
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            var userIdClaim = User?.FindFirst(ClaimTypes.NameIdentifier);
             if (userIdClaim == null || blog.OwnerId != Guid.Parse(userIdClaim.Value))
             {
                 return Forbid();

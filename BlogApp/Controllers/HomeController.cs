@@ -59,6 +59,7 @@ namespace BlogApp.Controllers
                     myBlogs.Count, userId, DateTime.UtcNow
                 );
 
+
                 return View(myBlogs);
             }
 
